@@ -1272,6 +1272,7 @@ function fillAndGenerate(id) {
   document.getElementById('ai-race-name').value = r.id;
   document.getElementById('ai-city').value = r.city;
   document.getElementById('ai-date').value = r.date;
+  updateProjectOptions(r.projects);
   document.getElementById('ai-project').value = r.projects[0];
 
   generatePlan();
@@ -2019,7 +2020,18 @@ function onRaceSelectChange() {
   if (!r) return;
   document.getElementById('ai-city').value = r.city;
   document.getElementById('ai-date').value = r.date;
+  updateProjectOptions(r.projects);
   document.getElementById('ai-project').value = r.projects[0];
+}
+
+function updateProjectOptions(availableProjects) {
+  const projectSelect = document.getElementById('ai-project');
+  Array.from(projectSelect.options).forEach(opt => {
+    const available = availableProjects.includes(opt.value);
+    opt.disabled = !available;
+    opt.textContent = opt.textContent.replace(/ ✅| 🔒/, '') + (available ? ' ✅' : ' 🔒');
+  });
+  projectSelect.value = availableProjects[0];
 }
 
 // ===== 初始化 =====
